@@ -25,7 +25,6 @@ add_library(${PROJECT_NAME} SHARED
   src/OccupancyVDBMapping.cpp 
   )
 
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -pedantic)
 
 target_include_directories(${PROJECT_NAME}
