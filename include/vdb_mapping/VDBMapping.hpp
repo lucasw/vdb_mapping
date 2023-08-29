@@ -329,29 +329,37 @@ bool VDBMapping<TData, TConfig>::raycastPointCloud(const PointCloudT::ConstPtr& 
     return false;
   }
 
-  RayT ray;
-  DDAT dda;
+  // RayT ray;
+  // DDAT dda;
 
   // Ray origin in world coordinates
-  openvdb::Vec3d ray_origin_world(origin.x(), origin.y(), origin.z());
+  const openvdb::Vec3d ray_origin_world(origin.x(), origin.y(), origin.z());
   // Ray origin in index coordinates
-  Vec3T ray_origin_index(m_vdb_grid->worldToIndex(ray_origin_world));
-  // Ray end point in world coordinates
-  openvdb::Vec3d ray_end_world;
+  const Vec3T ray_origin_index(m_vdb_grid->worldToIndex(ray_origin_world));
+
+  const double raycast_min_range = 2.0;
 
   // Raycasting of every point in the input cloud
   for (const PointT& pt : *cloud)
   {
-    ray_end_world      = openvdb::Vec3d(pt.x, pt.y, pt.z);
+    // Ray end point in world coordinates
+    // TODO(lucasw) can't be const because unit() doesn't take const?
+    openvdb::Vec3d ray_end_world = openvdb::Vec3d(pt.x, pt.y, pt.z);
     bool max_range_ray = false;
 
-    if (raycast_range > 0.0 && (ray_end_world - ray_origin_world).length() > raycast_range)
+    const auto ray_length = (ray_end_world - ray_origin_world).length();
+
+    if (raycast_min_range > 0.0 && ray_length < raycast_min_range) {
+      continue;
+    }
+
+    if (raycast_range > 0.0 && ray_length > raycast_range)
     {
       ray_end_world = ray_origin_world + (ray_end_world - ray_origin_world).unit() * raycast_range;
       max_range_ray = true;
     }
 
-    openvdb::Coord ray_end_index =
+    const openvdb::Coord ray_end_index =
       castRayIntoGrid(ray_origin_world, ray_origin_index, ray_end_world, update_grid_acc);
 
     if (!max_range_ray)
