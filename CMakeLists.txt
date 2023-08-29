@@ -40,12 +40,23 @@ target_include_directories(${PROJECT_NAME}
     ${PCL_INCLUDE_DIRS}
     )
 
+# 23.04 doesn't have this, but doesn't need it as long as Imath is there
+find_library(HALF_LIB Half)
+if (NOT HALF_LIB)
+  set(HALF_LIB "")
+endif()
+find_library(IMATH_LIB Imath)
+if (NOT IMATH_LIB)
+  set(IMATH_LIB "")
+endif()
+
 target_link_libraries(${PROJECT_NAME}
   PUBLIC
     ${OpenVDB_LIBRARIES}
     ${PCL_LIBRARIES}
     ${TBB_LIBRARIES}
-    -lImath
+    ${HALF_LIB}
+    ${IMATH_LIB}
     )
 
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
