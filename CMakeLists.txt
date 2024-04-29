@@ -106,7 +106,7 @@ install(
   FILES
     ${PROJECT_NAME}Config.cmake ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
     CMakeModules/FindOpenVDB.cmake
-    CMakeModules/FindTBB.cmake
+    # CMakeModules/FindTBB.cmake
   DESTINATION
     lib/cmake/${PROJECT_NAME}
   )
