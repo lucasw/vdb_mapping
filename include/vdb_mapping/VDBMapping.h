@@ -357,8 +357,8 @@ public:
 
 
 protected:
-  virtual bool updateFreeNode(TData& voxel_value, bool& active) { return false; }
-  virtual bool updateOccupiedNode(TData& voxel_value, bool& active) { return false; }
+  virtual bool updateFreeNode(TData& voxel_value, bool& active) {  (void)active; return false; }
+  virtual bool updateOccupiedNode(TData& voxel_value, bool& active) { (void)active; return false; }
   /*!
    * \brief VDB grid pointer
    */

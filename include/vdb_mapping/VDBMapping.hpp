@@ -101,6 +101,8 @@ template <typename TData, typename TConfig>
 typename VDBMapping<TData, TConfig>::GridT::Ptr
 VDBMapping<TData, TConfig>::createVDBMap(double resolution)
 {
+  // TODO(lucasw) what is resolution for- is it supposed to overrid m_resolution?
+  (void)resolution;
   typename GridT::Ptr new_map = GridT::create(TData());
   new_map->setTransform(openvdb::math::Transform::createLinearTransform(m_resolution));
   new_map->setGridClass(openvdb::GRID_LEVEL_SET);
